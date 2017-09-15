@@ -1,0 +1,11 @@
+package rewards.domain.model;
+
+import javax.sql.DataSource;
+
+public abstract class AbstractRepository {
+	private DataSource dataSource;
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+}

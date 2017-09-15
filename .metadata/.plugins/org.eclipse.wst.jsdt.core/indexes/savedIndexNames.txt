@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+/home/training/core-spring-training/workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+4146477814.index
+982870069.index
+3545109621.index
+267558503.index
+1392031625.index
+2110535881.index
+1403745616.index

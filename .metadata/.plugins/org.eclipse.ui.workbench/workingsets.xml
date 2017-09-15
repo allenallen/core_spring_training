@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1505268766745_0" label="java-spring-project-parent" name="java-spring-project-parent">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/jpa-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aop-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/container-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/container-3" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/data-jpa-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mvc-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/boot-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/test-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/jpa-working" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/jdbc-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/container-0" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/container-2" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/container-4" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/jpa-with-spring" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/web-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/library-app" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/tx-1" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/jpa-minus-spring" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/jpa-mapping" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1505268870427_1" label="Window Working Set" name="Aggregate for window 1505268870426"/>
+</workingSetManager>

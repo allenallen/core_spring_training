@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="jpa-1"/>
+<aop-project name="aop-1"/>
+<aop-project name="data-jpa-1"/>
+<aop-project name="container-1"/>
+<aop-project name="container-3"/>
+<aop-project name="mvc-1"/>
+<aop-project name="boot-1"/>
+<aop-project name="test-1"/>
+<aop-project name="jdbc-1"/>
+<aop-project name="container-4"/>
+<aop-project name="container-2"/>
+<aop-project name="container-0"/>
+<aop-project name="web-1"/>
+<aop-project name="tx-1"/>
+</aop-reference-model>

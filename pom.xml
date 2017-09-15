@@ -1,0 +1,193 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.orangeandbronze.training.springframework</groupId>
+	<artifactId>java-spring-project-parent</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.7.RELEASE</version>
+	</parent>
+
+	<name>java-spring-project-parent</name>
+	<description>Parent POM of Core Spring training exercises</description>
+
+	<modules>
+		<module>container-0</module>
+		<module>container-1</module>
+		<module>container-2</module>
+		<module>container-3</module>
+		<module>container-4</module>
+		<module>test-1</module>
+		<module>aop-1</module>
+		<module>jdbc-1</module>
+		<module>tx-1</module>
+		<module>jpa-1</module>
+		<module>data-jpa-1</module>
+		<module>web-1</module>
+		<module>mvc-1</module>
+		<module>boot-1</module>
+	</modules>
+
+	<properties>
+		<!-- Override some defaults from Spring Boot. -->
+		<java.version>1.8</java.version>
+		<hibernate.version>4.3.11.Final</hibernate.version>
+		<!-- Versions of other dependencies not in spring IO. -->
+		<jamon.version>2.81</jamon.version>
+		<money.api.version>1.0.1</money.api.version>
+		<moneta.version>1.1</moneta.version>
+		<!-- Enable maven support for Servlet 3 - no web.xml -->
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+
+    <!-- Dependencies we may need, and their versions -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.jamonapi</groupId>
+                <artifactId>jamon</artifactId>
+                <version>${jamon.version}</version>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api</artifactId>
+			<version>${money.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javamoney</groupId>
+			<artifactId>moneta</artifactId>
+			<version>${moneta.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Needed for the Spring jdbc namespace -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<!-- Database -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- Ensure resources are exported correctly - conflict with Spring Boot -->
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.3.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<!-- Set Java version -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Set Project Natures -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<wtpversion>2.0</wtpversion>
+					<sourceIncludes>
+						<sourceInclude>**/*.*</sourceInclude>
+					</sourceIncludes>
+					<!-- All of them are listed manually to solve a limitation of
+					the mvn eclipse plugin
+					(https://issuetracker.springsource.com/browse/STS-2938).
+					This might cause some issues when migrating to the next version
+					of Eclipse/STS) -->
+					<projectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+						<projectnature>org.eclipse.jdt.core.javanature</projectnature>
+						<projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
+						<projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
+						<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
+					</projectnatures>
+					<additionalBuildcommands>
+						<name>org.springframework.ide.eclipse.core.springbuilder</name>
+					</additionalBuildcommands>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/Abstract*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!-- Ensure resources are handled correctly -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>strict</id>
+			<properties>
+				<maven.test.failure.ignore>false</maven.test.failure.ignore>
+			</properties>
+		</profile>
+		<profile>
+			<id>fast</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>with-jpa-hibernate</id>
+			<modules>
+				<module>jpa-hibernate/jpa-minus-spring</module>
+				<module>jpa-hibernate/jpa-with-spring</module>
+				<module>jpa-hibernate/jpa-mapping</module>
+				<module>jpa-hibernate/jpa-working</module>
+				<module>jpa-hibernate/library-app</module>
+			</modules>
+		</profile>
+	</profiles>
+
+</project>

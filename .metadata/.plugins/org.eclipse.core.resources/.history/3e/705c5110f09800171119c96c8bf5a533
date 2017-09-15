@@ -1,0 +1,5 @@
+package rewards.domain.model;
+
+public abstract class AbstractRepository {
+
+}

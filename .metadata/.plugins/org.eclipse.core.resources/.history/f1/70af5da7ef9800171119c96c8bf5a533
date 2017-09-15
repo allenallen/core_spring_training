@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="rewardsService" class="rewards.application.RewardsApplicationServiceImpl">
+		<constructor-arg ref="accountRepository"/>
+		<constructor-arg ref="merchantRepository"/>
+		<constructor-arg ref="rewardRepository"/>
+	</bean>
+
+	<!-- TODO 02: Define an abstract bean called 'abstractRepository' which 
+	holds the property 'dataSource'.  Modify all repository beans to inherit
+	from it.  When done, run RewardsApplicationServiceTests to make sure your 
+	configuration is still valid.  -->
+
+	<bean id="accountRepository" class="rewards.infrastructure.jdbc.JdbcAccountRepository">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="merchantRepository" class="rewards.infrastructure.jdbc.JdbcMerchantRepository">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="rewardRepository" class="rewards.infrastructure.jdbc.JdbcRewardRepository">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+</beans>

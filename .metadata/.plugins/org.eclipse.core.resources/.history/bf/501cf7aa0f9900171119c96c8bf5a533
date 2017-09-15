@@ -1,0 +1,159 @@
+package rewards.application;
+
+import static org.junit.Assert.*;
+
+import java.math.BigDecimal;
+
+import javax.money.Monetary;
+import javax.money.MonetaryAmount;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import rewards.config.ApplicationConfig;
+import rewards.config.TestInfrastructureConfig;
+import rewards.config.TestInfrastructureDevConfig;
+import rewards.config.TestInfrastructureProductionConfig;
+
+/* : Refactor this test class to use spring-test
+ * 	- Remove setUp() and tearDown() methods and use spring-test annotations instead such as @ContextConfiguration. 
+ * 	- Remove the attribute 'context' which is not needed anymore.
+ * 	- Use @Autowire to populate the rewardsService instance.
+ *	- Re-run the current test, it should pass.
+ */
+
+/* : Annotate all 'Stub*Repository' classes with the @Repository
+ * In the package rewards/application, annotate all 'Stub*Repository'
+ * classes with the @Repository annotation (without specifying any
+ * profile yet). Rerun the current test, it should fail.  Why?
+ *when repository was added to the stub. Components scanned 2 Beans(jdbc and stub). don't know which one to use
+ */
+
+/* : Configure repositories using profiles
+ * 	- Using the @Profile annotation, assign the 'jdbc' profile to all Jdbc*Repository classes (such as JdbcAccountRepository).
+ * 	- Be sure to annotate the actual repository classes in src/main/java, not the test classes in src/main/test!
+ * 	- In the same way, assign the 'stub' profile to all Stub*Repository classes (such as StubAccountRepository)
+ * 	- Add @ActiveProfiles to this class and specify the "stub" profile.
+ * 	- Run the current test, it should pass. 
+ * 	- Examine the logs, they should indicate "stub" repositories were used.
+ */
+
+/* : Change active-profile to "jdbc". Rerun the test, it should pass.  
+ * 			Which repository implementations are being used now?
+ * jdbc repos
+ */
+
+/* : See corresponding step in TestInfrastructureDevConfig.
+ */
+
+/* : Now that the bean 'dataSource' is specific to the jdbc-dev profile, should we expect 
+ * 			this test to be successful?
+ * 			Make the appropriate changes so the current test uses 2 profiles ('jdbc' and 'jdbc-dev').
+ * 			Rerun the test, it should pass.
+ */
+
+/* : Open TestInfrastructureProductionConfig and note the different datasource that will be
+ * 			used if the profile = 'jdbc-production'.
+ * 			Now update the current test so it uses profiles 'jdbc' and 'jdbc-production'. 
+ * 			Rerun the test, it should pass.
+ */
+
+/*
+ * TODO 08: Bonus question
+ * When no class or XML file is specified, @ContextConfiguration
+ * will look for an inner class marked with @Configuration (If none
+ * is found it will also look for an XML file name of
+ * <Classname>-context.xml). Since the TestInfrastructureConfig
+ * class is so small anyway, copy the entire class definition,
+ * including annotations, to an inner class within this test
+ * class. Then remove the configuration class reference from the
+ * @ContextConfiguration annotation (no property in the brackets).
+ * This is an example of convention over configuration.
+ * Does the test still run?
+ */
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+@ActiveProfiles({"jdbc","jdbc-production"})
+public class RewardsApplicationServiceTests {
+	@Autowired
+	private RewardsApplicationService rewardsService;
+
+	private String merchantNumber = "1115558888";
+	private String cardNumber = "1234123412341234";
+	private String accountNumber = "1234567890";
+
+	//private AbstractApplicationContext context;
+
+//	@Before
+//	public void setUp() throws Exception {
+//		context = new AnnotationConfigApplicationContext(
+//				TestInfrastructureConfig.class);
+//
+//		// Get the bean to use to invoke the application
+//		rewardsService = context.getBean(RewardsApplicationService.class);
+//	}
+
+//	@After
+//	public void tearDown() throws Exception {
+//		if (context != null) {
+//			context.close();
+//		}
+//	}
+
+	private MonetaryAmount monetaryAmountOf(String amount) {
+		return Monetary.getDefaultAmountFactory()
+				.setNumber(new BigDecimal(amount))
+				.setCurrency("USD")
+				.create();
+	}
+
+	private Purchase purchaseOf(String amount) {
+		return new Purchase(
+				monetaryAmountOf(amount),
+				merchantNumber, cardNumber);
+	}
+
+	@Test
+	public void testRewardForPurchase() {
+		RewardConfirmation rewardConfirmation =
+				rewardsService.rewardAccountFor(purchaseOf("500.00"));
+
+		// assert the expected reward confirmation results
+		assertNotNull(rewardConfirmation);
+		assertNotNull(rewardConfirmation.getConfirmationNumber());
+
+		// assert that reward is given to "1234567890"
+		assertEquals(accountNumber, rewardConfirmation.getAccountNumber());
+
+		// assert reward of 10 points (50 bucks per point)
+		assertEquals(10, rewardConfirmation.getPointsEarned());
+	}
+	
+	@Configuration
+	@Import({
+		TestInfrastructureDevConfig.class,
+		TestInfrastructureProductionConfig.class,
+		ApplicationConfig.class })
+	private class TestInfrastructureConfig {
+
+		@Bean
+		public LoggingBeanPostProcessor loggingBean() {
+			return new LoggingBeanPostProcessor();
+		}
+
+	}
+
+
+}

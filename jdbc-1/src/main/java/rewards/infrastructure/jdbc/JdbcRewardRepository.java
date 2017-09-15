@@ -1,0 +1,77 @@
+package rewards.infrastructure.jdbc;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import rewards.application.Purchase;
+import rewards.application.RewardConfirmation;
+import rewards.domain.model.Account;
+import rewards.domain.model.RewardRepository;
+
+// : Add a field of type JdbcTemplate. Refactor the constructor to instantiate it.
+// Refactor the nextConfirmationNumber() and confirmReward(...) methods to use the template.
+// Save all work, run the JdbcRewardRepositoryTests. It should pass.
+
+@Repository
+public class JdbcRewardRepository implements RewardRepository {
+
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public JdbcRewardRepository(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+
+	private static final String SQL_INSERT_REWARD = "INSERT INTO T_REWARD (confirmation_number, reward_points, reward_date, account_number, card_number, merchant_number, purchase_amount, purchase_date)"
+			+ " VALUES (?, ?, TODAY, ?, ?, ?, ?, ?)";
+
+	@Override
+	public RewardConfirmation confirmReward(Purchase purchase, Account account, int pointsEarned) {
+		RewardConfirmation rewardConfirmation = new RewardConfirmation(nextConfirmationNumber(), account.getNumber(),
+				purchase.getAmount(), pointsEarned, account.getTotalPoints());
+
+		jdbcTemplate.update(SQL_INSERT_REWARD, rewardConfirmation.getConfirmationNumber(), pointsEarned,
+				account.getNumber(), purchase.getCardNumber(), purchase.getMerchantNumber(),
+				purchase.getAmount().getNumber().numberValue(BigDecimal.class),
+				new java.sql.Date(purchase.getDate().getTime()));
+
+		return rewardConfirmation;
+	}
+
+	private static final String SQL_NEXT_CONFIRMATION_NUMBER = "select next value for S_REWARD_CONFIRMATION_NUMBER from DUAL_REWARD_CONFIRMATION_NUMBER";
+
+	private String nextConfirmationNumber() {
+		return jdbcTemplate.queryForObject(SQL_NEXT_CONFIRMATION_NUMBER, String.class);
+		// try {
+		// Connection conn = dataSource.getConnection();
+		// try {
+		// PreparedStatement ps = conn.prepareStatement(SQL_NEXT_CONFIRMATION_NUMBER);
+		// ResultSet rs = ps.executeQuery();
+		// try {
+		// rs.next();
+		// return rs.getString(1);
+		// } finally {
+		// rs.close();
+		// }
+		// } finally {
+		// conn.close();
+		// }
+		// } catch (SQLException e) {
+		// // Interface defines no throws clause,
+		// // but SQLException is not a RuntimeException.
+		// // So, we wrap it, and comply with the interface.
+		// throw new RuntimeException("SQL exception getting next confirmation number",
+		// e);
+		// }
+	}
+
+}

@@ -1,0 +1,74 @@
+package rewards.infrastructure.monitor;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+// : Indicate this class is an aspect.  
+// Also mark it as a component.  
+// Place an @Autowired annotation on the constructor.
+@Aspect
+@Component
+public class LoggingAspect {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	private MonitorFactory monitorFactory;
+
+	@Autowired
+	public LoggingAspect(MonitorFactory monitorFactory) {
+		super();
+		this.monitorFactory = monitorFactory;
+	}
+
+	// : Mark this method with an advice type annotation.
+	// Decide which advice type is most appropriate. Write a
+	// point-cut expression that selects only find* methods
+	// on Repository classes.
+	@Before("execution(* rewards.domain.model.*Repository+.find*(..))")
+	public void implLogging(JoinPoint joinPoint) {
+		logger.info("Logging: Class - " + joinPoint.getTarget().getClass() + "; Executing before "
+				+ joinPoint.getSignature().getName() + "() method");
+	}
+
+	// : Mark this method as around advice.
+	// Write a point-cut expression to match on all update*
+	// methods on Repository classes.
+	@Around("execution(* rewards.domain.model.*Repository+.update*(..))")
+	public Object monitor(ProceedingJoinPoint repositoryMethod) throws Throwable {
+		String name = createJoinPointTraceName(repositoryMethod);
+		Monitor monitor = monitorFactory.create(name);
+		try {
+
+			// : Add the logic to proceed with the target
+			// method invocation. Be sure to return the target
+			// method's return value to the caller.
+			return repositoryMethod.proceed();
+			// return new String("Comment this line after completing TO-DO-07");
+
+		} finally {
+			monitor.stop();
+			logger.info(monitor.toString());
+		}
+	}
+
+	// : After completing the monitor method above,
+	// save all work, run the RewardsApplicationServiceTests.
+	// It should pass, and you should see console output from
+	// the monitor method.
+
+	private String createJoinPointTraceName(JoinPoint joinPoint) {
+		Signature signature = joinPoint.getSignature();
+		StringBuilder sb = new StringBuilder();
+		sb.append(signature.getDeclaringType().getSimpleName());
+		sb.append('.').append(signature.getName());
+		return sb.toString();
+	}
+
+}

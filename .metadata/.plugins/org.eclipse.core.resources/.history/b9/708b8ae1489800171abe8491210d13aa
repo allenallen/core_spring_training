@@ -1,0 +1,127 @@
+package rewards.application;
+
+import static org.junit.Assert.*;
+
+import java.math.BigDecimal;
+
+import javax.money.Monetary;
+import javax.money.MonetaryAmount;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import rewards.config.ApplicationConfig;
+import rewards.config.TestInfrastructureConfig;
+import rewards.domain.model.AccountRepository;
+import rewards.domain.model.MerchantRepository;
+import rewards.domain.model.RewardRepository;
+
+/**
+ * A system test that verifies the components of the rewards application work
+ * together to reward for purchase successfully. Uses Spring to bootstrap the
+ * application for use in a test environment.
+ */
+@SuppressWarnings("unused")
+public class RewardsApplicationServiceTests {
+
+	// TODO 01: Create configuration class: ApplicationConfig (under rewards.config
+	// package)
+	// In it, configure a RewardsApplicationServiceImpl bean and its dependencies.
+	// A dataSource bean is going to be provided by another configuration
+	// class: TestInfrastructureConfig which is already provided to you.
+	private ApplicationContext context;
+	private RewardsApplicationService rewardsService;
+
+	private String accountNumber;
+	private String merchantNumber;
+	private String cardNumber;
+
+//	@Before
+//	public void setUp() throws Exception {
+//		// TODO 02: Implement test set-up logic
+//		// Add the test setup logic required to run your system test.
+//		// In this method, you will need to create an application context
+//		// and configure it with the Spring Bean configuration classes
+//		// you just created - ApplicationConfig, and
+//		// TestInfrastructureConfig (provided).
+//		// In addition, you need to obtain a reference to a RewardsApplicationService
+//		// bean from the application context. Assign this as a private field you
+//		// can reference in your test methods.
+//		merchantNumber = "1115558888";
+//		cardNumber = "1234123412341234";
+//		accountNumber = "1234567890";
+//
+//		context = new AnnotationConfigApplicationContext(TestInfrastructureConfig.class, ApplicationConfig.class);
+//		rewardsService = context.getBean(RewardsApplicationService.class);
+//	}
+	
+	@Before
+	public void setUp() throws Exception {
+		// TODO 02: Implement test set-up logic
+		// Add the test setup logic required to run your system test.
+		// In this method, you will need to create an application context
+		// and configure it with the Spring Bean configuration classes
+		// you just created - ApplicationConfig, and
+		// TestInfrastructureConfig (provided).
+		// In addition, you need to obtain a reference to a RewardsApplicationService
+		// bean from the application context. Assign this as a private field you
+		// can reference in your test methods.
+		merchantNumber = "1115558888";
+		cardNumber = "1234123412341234";
+		accountNumber = "1234567890";
+
+		context = new AnnotationConfigApplicationContext(TestInfrastructureConfig.class);
+		rewardsService = context.getBean(RewardsApplicationService.class);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	// TODO 03: Implement test logic
+	// Copy the unit test (the @Test testRewardForPurchase method
+	// and supporting methods) from RewardsApplicationServiceImplTests.
+	// We are testing the same code, but using a different setup.
+	// The TestInfrastructureConfig will also load test data.
+	// Study it and see what IDs/Numbers can be used in the test.
+	// For your convenience, the test data is similar to what is
+	// used in RewardsApplicationServiceImplTests.
+	private MonetaryAmount monetaryAmountOf(String amount) {
+		return Monetary.getDefaultAmountFactory().setNumber(new BigDecimal(amount)).setCurrency("USD").create();
+	}
+
+	private Purchase purchaseOf(String amount) {
+		return new Purchase(monetaryAmountOf(amount), merchantNumber, cardNumber);
+	}
+
+	@Test
+	public void testRewardForPurchase() {
+		RewardConfirmation rewardConfirmation = rewardsService.rewardAccountFor(purchaseOf("500.00"));
+
+		// assert the expected reward confirmation results
+		assertNotNull(rewardConfirmation);
+		assertNotNull(rewardConfirmation.getConfirmationNumber());
+
+		// assert that reward is given to "1234567890"
+		assertEquals(accountNumber, rewardConfirmation.getAccountNumber());
+
+		// assert reward of 10 points (50 bucks per point)
+		assertEquals(10, rewardConfirmation.getPointsEarned());
+	}
+
+	// TODO 04: Run the test
+	// It will invoke RewardsApplicationService.rewardAccountFor(Purchase)
+	// method and verify all pieces of your application work together.
+	// What's the difference between RewardsApplicationServiceImplTests
+	// and this test?
+
+	// TODO 05: (BONUS) Use @Import
+	// Amend the test's @Before method to reference only the
+	// TestInfrastructureConfig configuration class. Next, modify
+	// TestInfrastructureConfig to include ApplicationConfig using
+	// @Import. Re-run your test, it should still pass.
+
+}

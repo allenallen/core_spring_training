@@ -1,0 +1,44 @@
+package rewards.infrastructure.jpa;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+
+import rewards.domain.model.Account;
+import rewards.domain.model.AccountRepository;
+
+@Repository
+public class JpaAccountRepository implements AccountRepository {
+
+    private EntityManager entityManager;
+
+	/**
+	 * Sets the entity manager. Assumes automatic dependency injection via the
+	 * JPA @PersistenceContext annotation. However this method may still be
+	 * called manually in a unit-test. Thus, the default (package private)
+	 * method visibility.
+	 * 
+	 * @param entityManager
+	 */
+    @PersistenceContext
+    void setEntityManager(EntityManager entityManager) {
+    	this.entityManager = entityManager;
+    }
+
+	@Override
+	public Account findByCardNumber(String cardNumber) {
+		TypedQuery<Account> query = entityManager.createQuery(
+				"SELECT a FROM Account a JOIN a.cards c "
+				+ "WHERE c.number = :cardNumber", Account.class);
+		query.setParameter("cardNumber", cardNumber);
+		return query.getSingleResult();
+	}
+	
+	@Override
+	public Account updateAccount(Account account) {
+		return entityManager.merge(account);
+	}
+
+}

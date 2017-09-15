@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="rewards.domain.model.Account"/>
+<fullyQualifiedTypeName name="rewards.domain.model.Merchant"/>
+<fullyQualifiedTypeName name="rewards.application.RewardConfirmation"/>
+<fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
+<fullyQualifiedTypeName name="rewards.application.RewardsApplicationService"/>
+<fullyQualifiedTypeName name="rewards.application.RewardsApplicationServiceImpl"/>
+<fullyQualifiedTypeName name="org.springframework.context.annotation.Bean"/>
+<fullyQualifiedTypeName name="rewards.domain.model.AccountRepository"/>
+<fullyQualifiedTypeName name="org.springframework.context.support.ClassPathXmlApplicationContext"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,22 @@
+package rewards.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import rewards.application.RewardsApplicationService;
+import rewards.application.RewardsApplicationServiceImpl;
+import rewards.domain.model.AccountRepository;
+
+@Configuration
+public class ApplicationConfig {
+
+	@Bean
+	public RewardsApplicationService rewardsApplicationService() {
+		return null;
+		//return new RewardsApplicationServiceImpl(accountRepository, merchantRepository, rewardRepository);
+	}
+	
+//	public AccountRepository accountRepository() {
+//		
+//	}
+}

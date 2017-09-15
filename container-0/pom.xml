@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.orangeandbronze.training.springframework</groupId>
+		<artifactId>java-spring-project-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>container-0</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>container-0</name>
+
+	<properties>
+	</properties>
+	
+	<dependencies>
+		<!--
+		Although this project does not use Spring,
+		we opted to use the same parent POM to keep
+		things simple.
+		-->
+	</dependencies>
+	
+</project>

@@ -1,0 +1,2 @@
+schema=classpath:rewards/testdb/schema.sql
+test-data=classpath:rewards/testdb/test-data.sql

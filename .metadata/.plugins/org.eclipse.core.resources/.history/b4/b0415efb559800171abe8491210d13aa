@@ -1,0 +1,55 @@
+package rewards.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import rewards.application.RewardsApplicationService;
+import rewards.application.RewardsApplicationServiceImpl;
+import rewards.domain.model.AccountRepository;
+import rewards.domain.model.MerchantRepository;
+import rewards.domain.model.RewardRepository;
+import rewards.infrastructure.jdbc.JdbcAccountRepository;
+import rewards.infrastructure.jdbc.JdbcMerchantRepository;
+import rewards.infrastructure.jdbc.JdbcRewardRepository;
+
+/* TODO 07: Add the annotation to cause component scanning.
+ * Set the base package to pick up all of the classes we have annotated so far.
+ * Save all changes, Re-run the RewardsApplicationServiceTests.
+ * It should now pass.
+ */
+@Configuration
+public class ApplicationConfig {
+
+	DataSource dataSource;
+
+	public RewardsApplicationService rewardsService() {
+		return new RewardsApplicationServiceImpl(
+			accountRepository(), 
+			merchantRepository(), 
+			rewardRepository());
+	}
+
+	public AccountRepository accountRepository() {
+		JdbcAccountRepository accountRepository = new JdbcAccountRepository();
+		accountRepository.setDataSource(dataSource);
+		return accountRepository;
+	}
+
+	public MerchantRepository merchantRepository() {
+		return new JdbcMerchantRepository(dataSource);
+	}
+
+	public RewardRepository rewardRepository() {
+		JdbcRewardRepository rewardRepository = new JdbcRewardRepository();
+		rewardRepository.setDataSource(dataSource);
+		return rewardRepository;
+	}
+
+	// Try executing the RewardsApplicationServiceTests. It should fail. Why?
+	// We will fix this in the next steps.
+	//Beans are not found
+
+}

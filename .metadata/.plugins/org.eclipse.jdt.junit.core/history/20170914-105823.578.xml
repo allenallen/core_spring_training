@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="RewardsApplicationServiceTests (3)" project="container-4" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="rewards.application.RewardsApplicationServiceTests" time="1.337">
+    <testcase name="testRewardForPurchase" classname="rewards.application.RewardsApplicationServiceTests" time="1.337"/>
+  </testsuite>
+</testrun>
