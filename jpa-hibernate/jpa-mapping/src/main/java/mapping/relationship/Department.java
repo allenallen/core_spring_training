@@ -12,6 +12,7 @@ public class Department {
 	private String name;
 
 	// TODO 02b: Map the one-to-many relationship to Employee entity
+	@OneToMany(mappedBy="department")
 	private Collection<Employee> employees;
 	
 	public Department(long id, String name) {

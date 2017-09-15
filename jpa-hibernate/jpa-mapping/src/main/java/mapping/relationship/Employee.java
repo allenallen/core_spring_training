@@ -12,6 +12,7 @@ public class Employee {
 	private String lastName;
 
 	// TODO 02a: Map the many-to-one relationship to Department entity
+	@ManyToOne
 	private Department department;
 	
 	public Employee(long id) {
