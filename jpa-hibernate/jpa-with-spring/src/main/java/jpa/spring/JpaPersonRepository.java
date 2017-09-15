@@ -1,5 +1,8 @@
 package jpa.spring;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import common.infrastructure.jpa.JpaGenericRepository;
 
 // TODO 02: Implement a DAO/repository with Spring
@@ -10,6 +13,8 @@ import common.infrastructure.jpa.JpaGenericRepository;
 // TODO 02b: Mark this for component scan and exception translation (@Repository)
 
 // TODO 02c: Mark this as transactional (@Transactional)
+@Repository
+@Transactional
 public class JpaPersonRepository
 		extends JpaGenericRepository<Person, Long>
 		implements PersonRepository {

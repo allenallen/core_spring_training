@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import common.domain.model.GenericRepository;
+
 public class JpaRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(JpaRunner.class);
@@ -14,19 +16,23 @@ public class JpaRunner {
 				new ClassPathXmlApplicationContext("classpath:jpa/spring/config.xml")) {
 			// TODO 03: Use JPA/Spring to persist and retrieve a Person object
 			// TODO 03a: Get a PersonRepository bean
-
+			PersonRepository repo = ctx.getBean(PersonRepository.class);
+			
 			final long personId = 42;
 			// TODO 03b: Create a Person object with the given id
 			// Use the constructor that accepts a long argument (use personId)
 			// Set the name to "John Smith"
+			Person john = new Person(personId);
+			john.setName("John Smith");
 
 			// TODO 03c: Add the created Person object into the persistence context
 			// (by calling PersonRepository#save(Object))
+			repo.save(john);
 
 			// TODO 03d: Retrieve the object that you just persisted
 			// (by calling PersonRepository#findOne(Object))
 			// Assign it to the person variable
-			Person person = null;
+			Person person = repo.findOne(john.getId());
 			logger.debug("Person's name is {}", person.getName());
 						
 			// TODO 03e: Run and see output
