@@ -17,12 +17,13 @@ import org.slf4j.LoggerFactory;
 // - the properties
 // - and how the Person class is listed in it.
 public class JpaRunner {
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(JpaRunner.class);
 
 	public static void main(String[] args) throws Exception {
 		String persistenceUnitName = "jpa.plain";
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(
+				persistenceUnitName);
 		try {
 			EntityManager em = emf.createEntityManager();
 			try {
@@ -38,18 +39,17 @@ public class JpaRunner {
 
 					// TODO 02b: Add the created Person object into the persistence context
 					// (by calling EntityManager#persist(Object))
-					em.persist(john);
+					 em.persist(john);
 
 					// TODO 02c: Retrieve the object that you just persisted
 					// (by calling EntityManager#find(Class, Object)
 					// Assign it to the person variable
 					Person person = em.find(Person.class, personId);
 					logger.debug("Person's name is {}", person.getName());
-
+					
 					// TODO 02d: Run and see output
 					// What table was created?
 					// How was the Person object persisted?
-					//Person table
 					tx.commit();
 				} catch (Exception e) {
 					logger.error("Exception occured", e);
