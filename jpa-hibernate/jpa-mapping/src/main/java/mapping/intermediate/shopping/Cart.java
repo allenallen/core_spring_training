@@ -12,18 +12,20 @@ import javax.persistence.*;
 public class Cart {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	// TODO 08a: Map one cart to many items using java.util.Map
 	// The map key is a Product entity
 	// The map value is a CartItem entity
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "cart")
+	@MapKey(name = "product")
 	private Map<Product, CartItem> items;
 
 	public Cart() {
 		this.items = new HashMap<>();
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -38,12 +40,10 @@ public class Cart {
 
 	public void setItemQuantity(Product product, int quantity) {
 		if (product == null) {
-			throw new IllegalArgumentException(
-					"Product cannot be null");
+			throw new IllegalArgumentException("Product cannot be null");
 		}
 		if (quantity < 0) {
-			throw new IllegalArgumentException(
-					"Quantity cannot be negative");
+			throw new IllegalArgumentException("Quantity cannot be negative");
 		}
 		if (quantity == 0) {
 			// Setting quantity to zero should remove product from cart
@@ -61,16 +61,15 @@ public class Cart {
 
 	public void removeItem(Product product) {
 		if (product == null) {
-			throw new IllegalArgumentException(
-					"Product cannot be null");
+			throw new IllegalArgumentException("Product cannot be null");
 		}
 		items.remove(product);
 	}
-	
+
 	public void clear() {
 		items.clear();
 	}
-	
+
 	public Map<CurrencyUnit, MonetaryAmount> getTotals() {
 		Map<CurrencyUnit, MonetaryAmount> totals = new HashMap<>();
 		for (CartItem item : items.values()) {

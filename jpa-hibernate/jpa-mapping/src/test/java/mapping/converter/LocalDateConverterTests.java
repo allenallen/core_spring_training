@@ -27,8 +27,7 @@ public class LocalDateConverterTests {
 	
 	@Test
 	public void convertToEntityAttribute() throws Exception {
-		assertEquals(
-			LocalDate.of(2000, 3, 15),
+		assertEquals(			LocalDate.of(2000, 3, 15),
 			converter.convertToEntityAttribute(
 					java.sql.Date.valueOf("2000-03-15")));
 	}

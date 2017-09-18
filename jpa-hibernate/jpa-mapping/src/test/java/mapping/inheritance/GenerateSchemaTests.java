@@ -32,7 +32,9 @@ public class GenerateSchemaTests {
 
 	// TODO 03f: Run these tests and see the output
 	// When persisting a Person, what fields were set?
+	//id, birthDate, firstName, gender, lastName, Type
 	// When persisting an Org, what fields were set?
+	//id, name, Type
 
 	@Test
 	public void testGenerateSchema() throws Exception {

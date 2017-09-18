@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="JdbcAccountRepositoryTests" project="jdbc-1" tests="4" started="4" failures="0" errors="0" ignored="0">
-  <testsuite name="rewards.infrastructure.jdbc.JdbcAccountRepositoryTests" time="0.763">
-    <testcase name="testFindAccountByCard" classname="rewards.infrastructure.jdbc.JdbcAccountRepositoryTests" time="0.721"/>
-    <testcase name="throwsExceptionWhenUpdatingNonExistingAccount" classname="rewards.infrastructure.jdbc.JdbcAccountRepositoryTests" time="0.017"/>
-    <testcase name="throwsExceptionWhenCardNumberNotFound" classname="rewards.infrastructure.jdbc.JdbcAccountRepositoryTests" time="0.012"/>
-    <testcase name="updateAccount" classname="rewards.infrastructure.jdbc.JdbcAccountRepositoryTests" time="0.013"/>
-  </testsuite>
-</testrun>

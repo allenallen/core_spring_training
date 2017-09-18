@@ -37,19 +37,20 @@ public class PersistentMonthDayAsIntegers implements CompositeUserType {
 		// TODO 04b: Cast the component parameter as java.time.MonthDay
 		// Store the component as a java.time.MonthDay variable.
 		// This will be used in the switch statement below.
-		// MonthDay monthDay = ... component;
-	
+		MonthDay monthDay = (MonthDay) component;
+
 		// TODO 04c: Return the appropriate property of the MonthDay based on index
 		// (as determined by propertyIndex parameter)
 		switch (propertyIndex) {
 		case 0:
 			// index 0, return the month value
+			return monthDay.getMonth();
 		case 1:
 			// index 1, return the day of month value
+			return monthDay.getDayOfMonth();
 		default:
 			// otherwise, an exception is thrown
-			throw new HibernateException(
-					"Invalid property index [" + propertyIndex + "]" );
+			throw new HibernateException("Invalid property index [" + propertyIndex + "]");
 		}
 	}
 
@@ -63,18 +64,18 @@ public class PersistentMonthDayAsIntegers implements CompositeUserType {
 	@Override
 	public Class returnedClass() {
 		// TODO 04d: Return the class being mapped (java.time.MonthDay)
-		return null;
+		return MonthDay.class;
 	}
 
 	@Override
 	public boolean equals(Object x, Object y) throws HibernateException {
-    	if ((x == null) && (y == null)) {
-    		return true;
-    	}
-        if ((x == null) || (y == null)) {
-            return false;
-        }
-        return x.equals(y);
+		if ((x == null) && (y == null)) {
+			return true;
+		}
+		if ((x == null) || (y == null)) {
+			return false;
+		}
+		return x.equals(y);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class PersistentMonthDayAsIntegers implements CompositeUserType {
 		// with the given month and dayOfMonth (already initialized above)
 		// Hint: Since java.time.MonthDay does not have a public constructor,
 		// use one of its static factory methods (e.g. MonthDay.of(int, int));
-		return null;
+		return MonthDay.of(month, dayOfMonth);
 	}
 
 	@Override

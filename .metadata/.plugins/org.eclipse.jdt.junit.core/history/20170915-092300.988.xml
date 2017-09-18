@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="JdbcMerchantRepositoryTests" project="jdbc-1" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="rewards.infrastructure.jdbc.JdbcMerchantRepositoryTests" time="0.5">
-    <testcase name="throwsExceptionWhenMerchantNotFound" classname="rewards.infrastructure.jdbc.JdbcMerchantRepositoryTests" time="0.481"/>
-    <testcase name="findByNumber" classname="rewards.infrastructure.jdbc.JdbcMerchantRepositoryTests" time="0.019"/>
-  </testsuite>
-</testrun>

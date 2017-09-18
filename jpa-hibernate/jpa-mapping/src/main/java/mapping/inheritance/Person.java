@@ -7,8 +7,10 @@ import javax.persistence.*;
 // TODO 03c: Map the Person class as a persistent entity
 
 // TODO 03e2 (optional): Override the discriminator value (as "PERS")
+@Entity
+@DiscriminatorValue("PERS")
 public class Person extends Party {
-	
+
 	private String firstName;
 	private String lastName;
 	@Temporal(TemporalType.DATE)

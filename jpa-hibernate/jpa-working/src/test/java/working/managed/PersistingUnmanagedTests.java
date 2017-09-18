@@ -42,9 +42,9 @@ public class PersistingUnmanagedTests {
 		entityManager.persist(emp);
 		entityManager.flush(); // Just so SQL commands can be seen
 		
-		entityManager.clear();
-		Employee emp3 = entityManager.find(Employee.class, id);
-		assertEquals("Johnny", emp3.getName());
+//		entityManager.clear();
+//		Employee emp3 = entityManager.find(Employee.class, id);
+//		assertEquals("Johnny", emp3.getName());
 	}
 
 	@Test

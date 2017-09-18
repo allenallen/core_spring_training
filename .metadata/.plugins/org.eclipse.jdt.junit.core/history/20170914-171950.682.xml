@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="JdbcRewardRepositoryTests" project="jdbc-1" tests="1" started="1" failures="0" errors="0" ignored="0">
-  <testsuite name="rewards.infrastructure.jdbc.JdbcRewardRepositoryTests" time="0.936">
-    <testcase name="testCreateReward" classname="rewards.infrastructure.jdbc.JdbcRewardRepositoryTests" time="0.936"/>
-  </testsuite>
-</testrun>

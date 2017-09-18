@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="RewardsApplicationServiceSideEffectsTests" project="tx-1" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="rewards.application.RewardsApplicationServiceSideEffectsTests" time="0.168">
-    <testcase name="test2ndTime" classname="rewards.application.RewardsApplicationServiceSideEffectsTests" time="0.155"/>
-    <testcase name="test1stTime" classname="rewards.application.RewardsApplicationServiceSideEffectsTests" time="0.013"/>
-  </testsuite>
-</testrun>

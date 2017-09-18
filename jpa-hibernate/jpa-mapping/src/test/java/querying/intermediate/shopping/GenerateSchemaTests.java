@@ -94,7 +94,7 @@ public class GenerateSchemaTests {
 		// TODO 09a: Select carts with orange juice (product.id = 103)
 		Product orangeJuice = entityManager.find(Product.class, 103L);
 		TypedQuery<Cart> query = entityManager.createQuery(
-				"SELECT c FROM Cart c", Cart.class);
+				"SELECT c FROM Cart c JOIN c.items i WHERE i.product = :product", Cart.class);
 		query.setParameter("product", orangeJuice);
 		List<Cart> carts = query.getResultList();
 		assertThat(carts, hasSize(3));
@@ -108,7 +108,7 @@ public class GenerateSchemaTests {
 		// TODO 09b: Select carts with three or more items (just items; not quantity of each item)
 		// HINT: Use JPA's SIZE() function on collections or maps
 		TypedQuery<Cart> query = entityManager.createQuery(
-				"SELECT c FROM Cart c", Cart.class);
+				"SELECT c FROM Cart c JOIN c.items i WHERE i.quantity >= 3", Cart.class);
 		List<Cart> carts = query.getResultList();
 		assertThat(carts, hasSize(3));
 		for (Cart cart : carts) {

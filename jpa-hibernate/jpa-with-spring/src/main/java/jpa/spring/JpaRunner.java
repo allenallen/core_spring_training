@@ -32,7 +32,7 @@ public class JpaRunner {
 			// TODO 03d: Retrieve the object that you just persisted
 			// (by calling PersonRepository#findOne(Object))
 			// Assign it to the person variable
-			Person person = repo.findOne(john.getId());
+			Person person = repo.findOne(john.getId());PROJECTS
 			logger.debug("Person's name is {}", person.getName());
 						
 			// TODO 03e: Run and see output

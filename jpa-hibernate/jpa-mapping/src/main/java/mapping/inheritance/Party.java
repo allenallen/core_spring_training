@@ -8,10 +8,13 @@ import javax.persistence.*;
 // TODO 03b: Define the inheritance to be used for Party/Person/Org
 
 // TODO 03e1 (optional): Override the discriminator column name (as TYPE)
+@Entity
+@Inheritance
+@DiscriminatorColumn(name = "Type")
 public abstract class Party {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	public Long getId() {

@@ -53,10 +53,12 @@ public class GenerateSchemaTests {
 	})
 	public void nameLike1() throws Exception {
 		// TODO 06a: Use JPQL to retrieve Person(s) with a name LIKE '%son%'
-		TypedQuery<Person> query = entityManager.createQuery(
-				"FROM Person", Person.class);
-		query.setParameter("name", "%son%");
-		List<Person> persons = query.getResultList();
+//		TypedQuery<Person> query = entityManager.createQuery(
+//				"FROM Person", Person.class);
+//		query.setParameter("name", "%son%");
+		
+		Query q = entityManager.createQuery("SELECT e FROM Person e WHERE e.name LIKE '%son%'");
+		List<Person> persons = q.getResultList();
 		assertEquals(3, persons.size());
 		assertThat(persons,
 				hasItem(hasProperty("name", equalTo("Mike Thompson"))));
@@ -81,10 +83,13 @@ public class GenerateSchemaTests {
 		// TODO 06b: Use JPQL to retrieve Person(s) with a name LIKE '%JO%'
 		// Use LOWER to make name comparison case-insensitive
 		// Use CONCAT to add wildcards (%) before and after the search string
-		TypedQuery<Person> query = entityManager.createQuery(
-				"FROM Person",
-				Person.class);
-		query.setParameter("name", "JO");
+//		TypedQuery<Person> query = entityManager.createQuery(
+//				"FROM Person",
+//				Person.class);
+//		query.setParameter("name", "JO");
+		Query query = entityManager.createQuery("SELECT p FROM Person p WHERE"
+				+ " LOWER(p.name) LIKE CONCAT('%',LOWER('JO'),'%')");
+		
 		List<Person> persons = query.getResultList();
 		assertEquals(2, persons.size());
 		assertThat(persons,
@@ -108,10 +113,11 @@ public class GenerateSchemaTests {
 	})
 	public void gender() throws Exception {
 		// TODO 06c: Use JPQL to retrieve females
-		TypedQuery<Person> query = entityManager.createQuery(
-				"FROM Person",
-				Person.class);
-		query.setParameter("gender", Gender.FEMALE);
+//		TypedQuery<Person> query = entityManager.createQuery(
+//				"FROM Person",
+//				Person.class);
+//		query.setParameter("gender", Gender.FEMALE);
+		Query query = entityManager.createQuery("SELECT p FROM Person p WHERE p.gender = 'FEMALE'");
 		List<Person> persons = query.getResultList();
 		assertEquals(3, persons.size());
 		assertThat(persons,
@@ -142,7 +148,7 @@ public class GenerateSchemaTests {
 		// TODO 06d: Use JPQL to count the number of males and females
 		// Hint: Use COUNT, GROUP BY, and ORDER BY
 		Query query = entityManager.createQuery(
-				"SELECT p FROM Person p");
+				"SELECT p.gender, COUNT(p) FROM Person p GROUP BY p.gender ORDER BY p.gender");
 		List<Object[]> results = query.getResultList();
 		assertEquals(2, results.size());
 		// (Gender) results.get(0)[0]
