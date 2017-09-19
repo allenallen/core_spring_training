@@ -29,8 +29,6 @@ public class BorrowingServiceFacadeTests extends AbstractBorrowingServiceFacadeT
 		Book book = new Book("The Affair", Category.NOVEL);
 		book.setAuthor("Lee Child");
 		book.setPublishDate(new PublishDate(Months.September, 2011));
-		book.setIsbn("1409011445, 9781409011446");
-		entityManager.persist(book);
 
 		/*
 		 * title: The Affair author: Lee Child published month: September published

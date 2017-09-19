@@ -38,7 +38,6 @@ public class Book {
 	private boolean isBorrowed;
 	private String isbn;
 	private String author;
-
 	public String getBarcode() {
 		return barcode;
 	}
@@ -94,5 +93,6 @@ public class Book {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-
+	
+	
 }

@@ -6,24 +6,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Embeddable
 public class PublishDate {
 	private final Map<Integer, String> months = new HashMap<>();
 
-	@Enumerated(EnumType.STRING)
-	private Months publishedMonth;
-
-	private int publishedYear;
-
 	protected PublishDate() {
 	}
 
-	public PublishDate(Months publishedMonth, int publishedYear) {
-		this.publishedMonth = publishedMonth;
-		this.publishedYear = publishedYear;
+	public PublishDate(LocalDate date) {
+		date.getMonthValue();
 	}
+
+	private String publishedMonth;
+	private int publishedYear;
 
 }

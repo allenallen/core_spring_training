@@ -12,12 +12,12 @@ import javax.persistence.Enumerated;
 @Embeddable
 public class PublishDate {
 	private final Map<Integer, String> months = new HashMap<>();
-
+	
 	@Enumerated(EnumType.STRING)
 	private Months publishedMonth;
-
+	
 	private int publishedYear;
-
+	
 	protected PublishDate() {
 	}
 
