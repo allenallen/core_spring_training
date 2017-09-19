@@ -46,13 +46,13 @@ public class JdbcAccountRepositoryTests {
 	@Test
 	public void updateAccount() throws Exception {
 		Account account = new Account("1234567890", "Juan Dela Cruz", 0);
-		accountRepository.updateAccount(account);
+		accountRepository.save(account);
 	}
 	
 	@Test(expected=IncorrectResultSizeDataAccessException.class)
 	public void throwsExceptionWhenUpdatingNonExistingAccount() throws Exception {
 		Account account = new Account("bogus", "Juan Dela Cruz", 0);
-		accountRepository.updateAccount(account);
+		accountRepository.save(account);
 	}
 
 	private DataSource createTestDataSource() {

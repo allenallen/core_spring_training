@@ -1,8 +1,9 @@
 package rewards.domain.model;
 
+import org.springframework.data.repository.Repository;
+
 // TODO 02b: Refactor this interface to take advantage of Spring Data JPA
-public interface MerchantRepository {
+public interface MerchantRepository extends Repository<Merchant, Long> {
 
 	Merchant findByNumber(String merchantNumber);
-
 }

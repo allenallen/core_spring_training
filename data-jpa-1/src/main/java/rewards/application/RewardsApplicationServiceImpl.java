@@ -38,7 +38,7 @@ public class RewardsApplicationServiceImpl implements RewardsApplicationService 
 				purchase.getMerchantNumber());
 		int pointsEarned = merchant.calculateRewardFor(account, purchase);
 		account.credit(pointsEarned);
-		accountRepository.updateAccount(account);
+		accountRepository.save(account);
 		// Return the corresponding reward confirmation
 		return rewardRepository.confirmReward(purchase, account, pointsEarned);
 	}

@@ -98,7 +98,7 @@ public class JdbcAccountRepository implements AccountRepository {
 					+ " WHERE a.NUMBER = ?";
 
 	@Override
-	public Account updateAccount(Account account) {
+	public Account save(Account account) {
 		int rowsUpdated = jdbcTemplate.update(SQL_UPDATE_ACCOUNT,
 				account.getTotalPoints(), account.getNumber());
 		if (rowsUpdated != 1) {

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="GenerateSchemaTests (5)" project="jpa-mapping" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="querying.relationship.GenerateSchemaTests" time="0.438">
-    <testcase name="departmentsThatHaveMoreThanTwoEmployees" classname="querying.relationship.GenerateSchemaTests" time="0.396"/>
-    <testcase name="employeesOfADepartment" classname="querying.relationship.GenerateSchemaTests" time="0.042"/>
-  </testsuite>
-</testrun>

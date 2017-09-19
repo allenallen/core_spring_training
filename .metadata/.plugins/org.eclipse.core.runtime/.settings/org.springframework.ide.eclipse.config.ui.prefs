@@ -1,3 +1,5 @@
 //com.springsource.config.ui.prefs.activePageIndex\:/container-3/src/main/resources/rewards/app-config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/data-jpa-1/src/main/resources/rewards/app-config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/data-jpa-1/src/test/resources/rewards/test-infrastructure-config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
 //com.springsource.config.ui.prefs.activePageIndex\:/jpa-with-spring/src/main/resources/jpa/spring/config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
 eclipse.preferences.version=1

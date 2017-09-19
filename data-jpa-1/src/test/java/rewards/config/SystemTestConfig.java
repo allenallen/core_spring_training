@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -26,6 +27,7 @@ import rewards.infrastructure.jpa.JpaMerchantRepository;
 // TODO 03a: Enable JPA repository implementation generation
 @Configuration
 @Import({ ApplicationConfig.class })
+@EnableJpaRepositories("rewards.domain.model.*")
 public class SystemTestConfig {
 
 	// Now that we've enabled JPA repository generation,
@@ -38,15 +40,15 @@ public class SystemTestConfig {
 		return new JdbcRewardRepository(dataSource());
 	}
 
-	@Bean
-	public AccountRepository accountRepository() {
-		return new JpaAccountRepository();
-	}
+//	@Bean
+//	public AccountRepository accountRepository() {
+//		return new JpaAccountRepository();
+//	}
 
-	@Bean
-	public MerchantRepository merchantRepository() {
-		return new JpaMerchantRepository();
-	}
+//	@Bean
+//	public MerchantRepository merchantRepository() {
+//		return new JpaMerchantRepository();
+//	}
 
 	// TODO 04: Run RewardsApplicationServiceTests again.
 	// When it passes, congratulations! You're now using Spring Data JPA.
@@ -62,14 +64,13 @@ public class SystemTestConfig {
 
 		Properties props = new Properties();
 		props.setProperty("hibernate.format_sql", "true");
-		
-		LocalContainerEntityManagerFactoryBean emfb = 
-			new LocalContainerEntityManagerFactoryBean();
+
+		LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
 		emfb.setDataSource(dataSource());
 		emfb.setPackagesToScan("rewards.domain.model");
 		emfb.setJpaProperties(props);
 		emfb.setJpaVendorAdapter(adapter);
-		
+
 		return emfb;
 	}
 
@@ -79,27 +80,23 @@ public class SystemTestConfig {
 	}
 
 	/**
-	 * Creates an in-memory "rewards" database populated 
-	 * with test data for fast testing
+	 * Creates an in-memory "rewards" database populated with test data for fast
+	 * testing
 	 */
 	@Bean
 	public DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder()
-			.addScript("classpath:rewards/testdb/schema.sql")
-			.addScript("classpath:rewards/testdb/test-data.sql")
-			.build();
+		return new EmbeddedDatabaseBuilder().addScript("classpath:rewards/testdb/schema.sql")
+				.addScript("classpath:rewards/testdb/test-data.sql").build();
 	}
 
 	/**
-	 * Adds a bean post processor that enables automatic
-	 * persistence exception translation to classes marked
-	 * with @Repository annotation.
+	 * Adds a bean post processor that enables automatic persistence exception
+	 * translation to classes marked with @Repository annotation.
 	 *
 	 * @return persistence exception translation
 	 */
 	@Bean
-	public PersistenceExceptionTranslationPostProcessor
-			persistenceExceptionTranslationPostProcessor() {
+	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 

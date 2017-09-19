@@ -1,0 +1,4 @@
+#Tomcat publish data
+#Tue Sep 19 13:36:52 PHT 2017
+org.eclipse.jst.jee.server\:/binary\:/home/training/core-spring-training/repository/org/springframework/spring-web/4.3.9.RELEASE/spring-web-4.3.9.RELEASE.jar=/home/training/sts-bundle/pivotal-tc-server-developer-3.2.6.RELEASE/base-instance/wtpwebapps/mvc-1/WEB-INF/lib/spring-web-4.3.9.RELEASE.jar
+org.eclipse.jst.jee.server\:mvc-1=/home/training/sts-bundle/pivotal-tc-server-developer-3.2.6.RELEASE/base-instance/wtpwebapps/mvc-1

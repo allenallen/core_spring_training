@@ -37,7 +37,7 @@ public class JpaAccountRepository implements AccountRepository {
 	}
 	
 	@Override
-	public Account updateAccount(Account account) {
+	public Account save(Account account) {
 		return entityManager.merge(account);
 	}
 

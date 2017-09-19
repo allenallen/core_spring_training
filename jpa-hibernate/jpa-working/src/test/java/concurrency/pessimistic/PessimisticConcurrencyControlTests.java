@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceUnit;
 
 import org.apache.commons.logging.Log;
@@ -20,9 +21,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import concurrency.model.BankAccount;
 
-@ContextConfiguration(locations="../ConcurrencyTests-context.xml")
+@ContextConfiguration(locations = "../ConcurrencyTests-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode=ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @Rollback
 public class PessimisticConcurrencyControlTests {
 
@@ -49,7 +50,7 @@ public class PessimisticConcurrencyControlTests {
 				entityManager.getTransaction().commit();
 				bankAccountId = bankAccount.getId();
 				assertNotNull(bankAccountId);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				entityManager.getTransaction().rollback();
 				fail("Failed to setup a bank account with $100 for testing");
 				throw e;
@@ -80,12 +81,12 @@ public class PessimisticConcurrencyControlTests {
 				entityManager.getTransaction().begin();
 				try {
 					// TODO Use LockModeType.PESSIMISTIC_READ
-					BankAccount bankAccount = entityManager.find(
-							BankAccount.class, bankAccountId);
+					BankAccount bankAccount = entityManager.find(BankAccount.class, bankAccountId,
+							LockModeType.PESSIMISTIC_READ);
 					doInTransactionWithBankAccount(bankAccount);
 					entityManager.merge(bankAccount);
 					entityManager.getTransaction().commit();
-				} catch(Exception e) {
+				} catch (Exception e) {
 					logger.warn("Bank account action failed", e);
 					if (entityManager.getTransaction().isActive()) {
 						entityManager.getTransaction().setRollbackOnly();
@@ -102,8 +103,7 @@ public class PessimisticConcurrencyControlTests {
 			execute();
 		}
 
-		protected abstract void doInTransactionWithBankAccount(
-				BankAccount bankAccount);
+		protected abstract void doInTransactionWithBankAccount(BankAccount bankAccount);
 
 	}
 
@@ -141,10 +141,8 @@ public class PessimisticConcurrencyControlTests {
 
 	@Test
 	public void simultaneousWithdrawAndDeposit() throws Exception {
-		Thread t1 = new Thread(
-				new WithdrawAction(bankAccountId, 50), "Withdraw");
-		Thread t2 = new Thread(
-				new DepositAction(bankAccountId, 50), "Deposit");
+		Thread t1 = new Thread(new WithdrawAction(bankAccountId, 50), "Withdraw");
+		Thread t2 = new Thread(new DepositAction(bankAccountId, 50), "Deposit");
 		t1.start();
 		t2.start();
 		t1.join();
