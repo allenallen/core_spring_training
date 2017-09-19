@@ -1,5 +1,7 @@
 package libraryapp.domain.model;
 
-public interface UserRepository {
-	User findUserById(String id); 
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository extends CrudRepository<User, Long>{
+	User findUserByMemberId(String id); 
 }

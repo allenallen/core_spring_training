@@ -8,9 +8,11 @@ import java.util.Map;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 
 @Embeddable
 public class PublishDate {
+	@Transient
 	private final Map<Integer, String> months = new HashMap<>();
 
 	@Enumerated(EnumType.STRING)

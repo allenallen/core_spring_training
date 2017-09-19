@@ -8,6 +8,8 @@ import libraryapp.domain.model.Book;
 import libraryapp.domain.model.Category;
 import libraryapp.domain.model.Months;
 import libraryapp.domain.model.PublishDate;
+import libraryapp.domain.model.User;
+import libraryapp.domain.model.UserType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -26,10 +28,11 @@ public class BorrowingServiceFacadeTests extends AbstractBorrowingServiceFacadeT
 		// So, you can use it here.
 		// entityManager.persist(entity);
 
-		Book book = new Book("The Affair", Category.NOVEL);
-		book.setAuthor("Lee Child");
-		book.setPublishDate(new PublishDate(Months.September, 2011));
-		book.setIsbn("1409011445, 9781409011446");
+		Book book = new Book("Inferno", Category.NOVEL);
+		book.setAuthor("Dan Brown");
+		book.setPublishDate(new PublishDate(Months.September, 2009));
+		book.setIsbn("0593075005, 9780593075005");
+		book.setBarcode("1");
 		entityManager.persist(book);
 
 		/*
@@ -76,6 +79,12 @@ public class BorrowingServiceFacadeTests extends AbstractBorrowingServiceFacadeT
 		 */
 		// An entityManager field has already been defined in the base class.
 		// So, you can use it here.
+		User user = new User();
+		user.setName("Sally");
+		user.setMemberAccountId("1");
+		user.setType(UserType.UNDER_GRADUATE);
+
+		entityManager.persist(user);
 	}
 
 	@Override
@@ -104,7 +113,7 @@ public class BorrowingServiceFacadeTests extends AbstractBorrowingServiceFacadeT
 
 		// TODO Initialize the following member account IDs
 		johnAccountId = null;
-		sallyAccountId = null;
+		sallyAccountId = "1";
 		patAccountId = null;
 	}
 

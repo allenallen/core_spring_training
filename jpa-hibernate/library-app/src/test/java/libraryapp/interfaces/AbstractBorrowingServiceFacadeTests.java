@@ -18,27 +18,39 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+import libraryapp.domain.model.Book;
 import libraryapp.domain.model.BookLoanStatus;
+import libraryapp.domain.model.BookRepository;
+import libraryapp.domain.model.Category;
+import libraryapp.domain.model.Months;
+import libraryapp.domain.model.PublishDate;
+import libraryapp.domain.model.User;
+import libraryapp.domain.model.UserRepository;
 
-@DirtiesContext(classMode=ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @Rollback
 public abstract class AbstractBorrowingServiceFacadeTests {
 
 	@Autowired
 	protected BorrowingServiceFacade service;
 
+	@Autowired
+	private BookRepository br;
+
+	@Autowired
+	private UserRepository ur;
+
 	@PersistenceUnit
 	protected EntityManagerFactory entityManagerFactory;
 	protected EntityManager entityManager;
-	
+
 	protected String johnAccountId; // department head
 	protected String sallyAccountId; // undergraduate student
 	protected String patAccountId; // graduate student
 
 	@Before
 	public void setUp() throws Exception {
-		assertNotNull(
-				"Please provide a service implementation", service);
+		assertNotNull("Please provide a service implementation", service);
 		entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		try {
@@ -47,7 +59,7 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 			setUpLoanPeriods();
 			setUpMemberAccounts();
 			entityManager.getTransaction().commit();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			throw e;
 		} finally {
@@ -88,6 +100,24 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 	}
 
 	@Test
+	public void checkPersistedBook() throws Exception {
+		Book book = new Book("Inferno", Category.NOVEL);
+		book.setAuthor("Dan Brown");
+		book.setPublishDate(new PublishDate(Months.September, 2009));
+		book.setBarcode("1");
+		Book book1 = br.findBookByBarcode(book.getBarcode());
+		assertNotNull(book1);
+		assertEquals("Inferno", book1.getTitle());
+	}
+
+	@Test
+	public void checkPersistedUser() throws Exception {
+		User user = ur.findUserByMemberId("1");
+		assertNotNull(user);
+		assertEquals("Sally", user.getName());
+	}
+
+	@Test
 	public void borrowBookCopyAndReturn() throws Exception {
 		String barcode = "9780593075005-1"; // Inferno by Dan Brown
 
@@ -97,19 +127,16 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 		assertEquals("Inferno", receipt.getTitle());
 		assertEquals(barcode, receipt.getBarcode());
 		assertEquals(today(), receipt.getBorrowDate());
-		assertEquals(
-				"Sally (an undergraduate student) can borrow novels for up to 10 days",
-				todayPlus(10), receipt.getDueDate());
+		assertEquals("Sally (an undergraduate student) can borrow novels for up to 10 days", todayPlus(10),
+				receipt.getDueDate());
 		Collection<BookLoanStatus> bookLoans = service.getBookLoanStatus(sallyAccountId);
-		assertEquals("After borrowing, number of loans should be one",
-				1, bookLoans.size());
+		assertEquals("After borrowing, number of loans should be one", 1, bookLoans.size());
 
 		service.returnBook(barcode, sallyAccountId);
 		bookLoans = service.getBookLoanStatus(sallyAccountId);
-		assertEquals("After returning, number of loans should be zero",
-				0, bookLoans.size());
+		assertEquals("After returning, number of loans should be zero", 0, bookLoans.size());
 	}
-	
+
 	@Test
 	public void borrowBookCopiesWithDifferentLoanPeriods() throws Exception {
 		// TODO Comment out line below and make test pass
@@ -118,13 +145,11 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 		String barcodeReferenceBook = "9783125341470-1"; // Advanced Grammar in Use by Martin Hewings
 		BorrowReceipt receipt;
 		receipt = service.borrowBook(barcodeNovel, sallyAccountId);
-		assertEquals(
-				"Sally (an undergraduate student) can borrow novels for up to 10 days",
-				todayPlus(10), receipt.getDueDate());
+		assertEquals("Sally (an undergraduate student) can borrow novels for up to 10 days", todayPlus(10),
+				receipt.getDueDate());
 		receipt = service.borrowBook(barcodeReferenceBook, sallyAccountId);
-		assertEquals(
-				"Sally (an undergraduate student) can borrow reference books for up to 15 days",
-				todayPlus(15), receipt.getDueDate());
+		assertEquals("Sally (an undergraduate student) can borrow reference books for up to 15 days", todayPlus(15),
+				receipt.getDueDate());
 	}
 
 	@Test
@@ -187,13 +212,12 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 		private final String memberAccountId;
 		private final BorrowingServiceFacade service;
 
-		public BorrowBookCommand(
-				String barcode, String memberAccountId, BorrowingServiceFacade service) {
+		public BorrowBookCommand(String barcode, String memberAccountId, BorrowingServiceFacade service) {
 			this.barcode = barcode;
 			this.memberAccountId = memberAccountId;
 			this.service = service;
 		}
-		
+
 		public void execute() {
 			service.borrowBook(barcode, memberAccountId);
 		}
@@ -213,15 +237,9 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 		String barcode3 = "9780373696062-1"; // A Wanted Man by Lee Child
 
 		// Launch threads simultaneously borrowing different books
-		Thread t1 = new Thread(new BorrowBookCommand(
-				barcode1, patAccountId, service),
-				"Pat borrowing " + barcode1);
-		Thread t2 = new Thread(new BorrowBookCommand(
-				barcode2, patAccountId, service),
-				"Pat borrowing " + barcode2);
-		Thread t3 = new Thread(new BorrowBookCommand(
-				barcode3, patAccountId, service),
-				"Pat borrowing " + barcode3);
+		Thread t1 = new Thread(new BorrowBookCommand(barcode1, patAccountId, service), "Pat borrowing " + barcode1);
+		Thread t2 = new Thread(new BorrowBookCommand(barcode2, patAccountId, service), "Pat borrowing " + barcode2);
+		Thread t3 = new Thread(new BorrowBookCommand(barcode3, patAccountId, service), "Pat borrowing " + barcode3);
 
 		// In the case of Pat (graduate student), this should still result
 		// in an exception, and prevent Pat from exceeding the maximum
@@ -234,9 +252,7 @@ public abstract class AbstractBorrowingServiceFacadeTests {
 		t3.join();
 
 		Collection<BookLoanStatus> bookLoans = service.getBookLoanStatus(patAccountId);
-		assertEquals(
-				"Pat (a graduate student) is allowed to borrow up to 2 books",
-				2, bookLoans.size());
+		assertEquals("Pat (a graduate student) is allowed to borrow up to 2 books", 2, bookLoans.size());
 	}
 
 }

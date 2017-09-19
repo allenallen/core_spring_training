@@ -20,7 +20,7 @@ import libraryapp.interfaces.ReservationReceipt;
 public class BorrowingServiceImpl implements BorrowingService {
 	private UserRepository userRepository;
 	private BookRepository bookRepository;
-	
+
 	@Autowired
 	public BorrowingServiceImpl(UserRepository userRepository, BookRepository bookRepository) {
 		this.userRepository = userRepository;
@@ -30,8 +30,8 @@ public class BorrowingServiceImpl implements BorrowingService {
 	@Override
 	public BorrowReceipt borrowBook(String barcode, String memberAccountId) {
 		Book book = bookRepository.findBookByBarcode(barcode);
-		User user = userRepository.findUserById(memberAccountId);
-		
+		User user = userRepository.findUserByMemberId(memberAccountId);
+
 		return null;
 	}
 
