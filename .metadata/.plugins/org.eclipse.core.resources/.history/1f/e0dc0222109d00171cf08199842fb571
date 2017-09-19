@@ -1,0 +1,7 @@
+package libraryapp.domain.model;
+
+public class PublishDate {
+	protected PublishDate() {}
+	
+	
+}

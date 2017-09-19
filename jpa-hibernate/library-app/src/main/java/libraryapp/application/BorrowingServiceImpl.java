@@ -1,0 +1,56 @@
+package libraryapp.application;
+
+import java.util.Collection;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import libraryapp.domain.model.Book;
+import libraryapp.domain.model.BookLoanStatus;
+import libraryapp.domain.model.BookRepository;
+import libraryapp.domain.model.User;
+import libraryapp.domain.model.UserRepository;
+import libraryapp.interfaces.BorrowReceipt;
+import libraryapp.interfaces.ReservationReceipt;
+
+@Service("service")
+public class BorrowingServiceImpl implements BorrowingService {
+	private UserRepository userRepository;
+	private BookRepository bookRepository;
+	
+	@Autowired
+	public BorrowingServiceImpl(UserRepository userRepository, BookRepository bookRepository) {
+		this.userRepository = userRepository;
+		this.bookRepository = bookRepository;
+	}
+
+	@Override
+	public BorrowReceipt borrowBook(String barcode, String memberAccountId) {
+		Book book = bookRepository.findBookByBarcode(barcode);
+		User user = userRepository.findUserById(memberAccountId);
+		
+		return null;
+	}
+
+	@Override
+	public void returnBook(String barcode, String memberAccountId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ReservationReceipt reserveBook(String isbn, String memberAccountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<BookLoanStatus> getBookLoanStatus(String memberAccountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

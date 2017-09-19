@@ -1,0 +1,14 @@
+package libraryapp.infrastructure.persistence.jpa;
+
+import libraryapp.domain.model.User;
+import libraryapp.domain.model.UserRepository;
+
+public class JpaUserRepository implements UserRepository {
+
+	@Override
+	public User findUserById(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

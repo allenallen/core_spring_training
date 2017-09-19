@@ -1,0 +1,21 @@
+package libraryapp.domain.model;
+
+import java.time.LocalDate;
+
+import javax.persistence.Embeddable;
+
+@Embeddable
+public class PublishDate {
+	protected PublishDate() {}
+	
+	private String publishedMonth;
+	private int publishedYear;
+	
+	public PublishDate(LocalDate localDate) {
+		localDate.getMonth().getValue();
+	}
+	
+	private enum Month {
+		January (1)
+	}
+}

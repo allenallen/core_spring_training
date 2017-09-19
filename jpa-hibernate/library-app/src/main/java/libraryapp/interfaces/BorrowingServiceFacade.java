@@ -2,6 +2,8 @@ package libraryapp.interfaces;
 
 import java.util.Collection;
 
+import libraryapp.domain.model.BookLoanStatus;
+
 /**
  * This facade shields the domain layer - model, services, repositories -
  * from concerns about such things as the user interface and remoting.

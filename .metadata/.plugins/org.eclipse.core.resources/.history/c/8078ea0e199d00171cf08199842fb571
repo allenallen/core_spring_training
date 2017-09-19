@@ -1,0 +1,35 @@
+package libraryapp.application;
+
+import java.util.Collection;
+
+import libraryapp.interfaces.BookLoanStatus;
+import libraryapp.interfaces.BorrowReceipt;
+import libraryapp.interfaces.ReservationReceipt;
+
+public class BorrowingServiceImpl implements BorrowingService {
+
+	@Override
+	public BorrowReceipt borrowBook(String barcode, String memberAccountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void returnBook(String barcode, String memberAccountId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ReservationReceipt reserveBook(String isbn, String memberAccountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<BookLoanStatus> getBookLoanStatus(String memberAccountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

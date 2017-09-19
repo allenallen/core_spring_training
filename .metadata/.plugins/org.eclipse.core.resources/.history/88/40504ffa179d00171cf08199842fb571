@@ -1,0 +1,43 @@
+package libraryapp.domain.model;
+
+import java.util.Collection;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
+public class Book {
+
+	public Book() {
+		this.isBorrowed = false;
+	}
+
+	public Book(String title, Category category) {
+		this.title = title;
+		this.category = category;
+		this.isBorrowed = false;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
+	private String barcode;
+	private String title;
+	@Embedded
+	PublishDate publishDate;
+	@Enumerated(EnumType.STRING)
+	private Category category;
+
+	@OneToMany(mappedBy = "isbn")
+	private Collection<Book> copies;
+
+	private boolean isBorrowed;
+	private String isbn;
+}

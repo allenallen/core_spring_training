@@ -1,0 +1,28 @@
+package libraryapp.domain.model;
+
+import java.util.Collection;
+
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+public class Book {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
+	private long barcode;
+	private String title;
+	@Embedded
+	PublishDate publishDate;
+	@Enumerated(EnumType.STRING)
+	private Category category;
+	
+	@OneToMany
+	private Collection<Book> copies;
+}

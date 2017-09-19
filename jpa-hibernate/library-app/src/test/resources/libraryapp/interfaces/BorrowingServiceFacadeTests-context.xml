@@ -24,7 +24,7 @@
 			</props>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="libraryapp.domain.model" />
+		<property name="packagesToScan" value="libraryapp.domain.model,libraryapp.domain.service" />
 	</bean>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

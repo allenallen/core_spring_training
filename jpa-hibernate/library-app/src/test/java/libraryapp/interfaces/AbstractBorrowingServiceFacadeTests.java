@@ -18,6 +18,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+import libraryapp.domain.model.BookLoanStatus;
+
 @DirtiesContext(classMode=ClassMode.AFTER_EACH_TEST_METHOD)
 @Rollback
 public abstract class AbstractBorrowingServiceFacadeTests {

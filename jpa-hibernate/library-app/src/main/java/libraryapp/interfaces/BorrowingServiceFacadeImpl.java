@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
+import libraryapp.domain.model.BookLoanStatus;
+
 @Service
 public class BorrowingServiceFacadeImpl implements BorrowingServiceFacade {
 
