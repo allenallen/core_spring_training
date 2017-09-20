@@ -33,14 +33,21 @@ public class JpaUserRepository implements UserRepository {
 		em.merge(user);
 	}
 
+	@Transactional
 	@Override
 	public void returnBook(String barcode, User user) {
-		TypedQuery<BookLoanStatus> query = em
-				.createQuery("SELECT a FROM User u JOIN User_BookLoanStatus b ON u.id LEFT JOIN u.bookLoanStatus a WHERE u.id = " + user.getId()
-						+ " AND u.bookLoanStatus.barcode = :barcode", BookLoanStatus.class);
-		query.setParameter("barcode", barcode);
-		BookLoanStatus bls = query.getSingleResult();
+		// TypedQuery<BookLoanStatus> query = em
+		// .createQuery("SELECT a FROM User u JOIN BookLoanStatus b ON id WHERE u.id = "
+		// + user.getId()
+		// + " AND u.bookLoanStatus.barcode = :barcode", BookLoanStatus.class);
+		// query.setParameter("barcode", barcode);
+		// BookLoanStatus bls = query.getSingleResult();
+		// user.returnBook(bls);
+		BookLoanStatus bls = user.getBookLoanStatus().stream()
+				.filter((bookLoan) -> bookLoan.getBarcode().equals(barcode)).findFirst().get();
+		System.out.println(user.getBookLoanStatus().size());
 		user.returnBook(bls);
+		System.out.println(user.getBookLoanStatus().size());
 		em.merge(user);
 	}
 

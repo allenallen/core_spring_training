@@ -31,7 +31,7 @@ public class User {
 
 	private int maxBorrowingDays;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<BookLoanStatus> bookLoanStatus;
 
 	protected User() {
