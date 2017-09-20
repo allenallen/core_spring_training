@@ -1,14 +1,19 @@
 package libraryapp.domain.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class User {
@@ -18,11 +23,39 @@ public class User {
 	private long id;
 
 	private String name;
-	
+
 	private String memberAccountId;
 
 	@Enumerated(EnumType.STRING)
 	private UserType type;
+
+	private int maxBorrowingDays;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Collection<BookLoanStatus> bookLoanStatus;
+
+	protected User() {
+	}
+
+	public User(String name, String memberAccountId, UserType userType) {
+		this.name = name;
+		this.memberAccountId = memberAccountId;
+		this.type = userType;
+		this.maxBorrowingDays = this.type.getValue();
+		this.bookLoanStatus = new ArrayList<>();
+	}
+
+	public Collection<BookLoanStatus> getBookLoanStatus() {
+		return new ArrayList<BookLoanStatus>(bookLoanStatus);
+	}
+
+	public void addBookLoanStatus(BookLoanStatus bls) {
+		this.bookLoanStatus.add(bls);
+	}
+
+	public void returnBook(BookLoanStatus bookLoanStatus) {
+		this.bookLoanStatus.remove(bookLoanStatus);
+	}
 
 	public long getId() {
 		return id;
@@ -51,11 +84,19 @@ public class User {
 	public void setMemberAccountId(String memberAccountId) {
 		this.memberAccountId = memberAccountId;
 	}
-	
+
 	public String getMemberAccountId() {
 		return this.memberAccountId;
 	}
 
-//	@OneToMany
-//	private Collection<BookLoanStatus> booksBorrowed;
+	public int getMaxBorrowingDays() {
+		return maxBorrowingDays;
+	}
+
+	public void setMaxBorrowingDays(int maxBorrowingDays) {
+		this.maxBorrowingDays = maxBorrowingDays;
+	}
+
+	// @OneToMany
+	// private Collection<BookLoanStatus> booksBorrowed;
 }

@@ -1,3 +1,8 @@
 1505809437079	Rename type 'ApplicationContext'
 1505812559558	Move compilation unit
 1505814498101	Encapsulate field 'author'
+1505866653172	Delete element
+1505866761427	Delete element
+1505866769122	Move compilation unit
+1505866834080	Encapsulate field 'maxBorrowingDays'
+1505872612422	Encapsulate field 'user'

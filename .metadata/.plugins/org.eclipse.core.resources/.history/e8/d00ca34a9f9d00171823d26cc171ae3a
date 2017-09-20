@@ -1,0 +1,9 @@
+package libraryapp.domain.model;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository extends CrudRepository<User, Long> {
+	User findUserByMemberId(String id);
+
+	BookLoanStatus getBookLoanStatus(String barcode);
+}

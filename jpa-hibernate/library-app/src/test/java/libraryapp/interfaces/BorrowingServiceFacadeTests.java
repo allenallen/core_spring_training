@@ -32,7 +32,7 @@ public class BorrowingServiceFacadeTests extends AbstractBorrowingServiceFacadeT
 		book.setAuthor("Dan Brown");
 		book.setPublishDate(new PublishDate(Months.September, 2009));
 		book.setIsbn("0593075005, 9780593075005");
-		book.setBarcode("1");
+		book.setBarcode("9780593075005-1");
 		entityManager.persist(book);
 
 		/*
@@ -79,10 +79,7 @@ public class BorrowingServiceFacadeTests extends AbstractBorrowingServiceFacadeT
 		 */
 		// An entityManager field has already been defined in the base class.
 		// So, you can use it here.
-		User user = new User();
-		user.setName("Sally");
-		user.setMemberAccountId("1");
-		user.setType(UserType.UNDER_GRADUATE);
+		User user = new User("Sally", "1", UserType.UNDER_GRADUATE);
 
 		entityManager.persist(user);
 	}

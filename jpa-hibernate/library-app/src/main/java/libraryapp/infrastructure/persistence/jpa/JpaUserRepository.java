@@ -5,7 +5,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import libraryapp.domain.model.BookLoanStatus;
 import libraryapp.domain.model.User;
 import libraryapp.domain.model.UserRepository;
 
@@ -26,69 +28,20 @@ public class JpaUserRepository implements UserRepository {
 	}
 
 	@Override
-	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
+	@Transactional
+	public void save(User user) {
+		em.merge(user);
 	}
 
 	@Override
-	public void delete(Long arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(User arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(Iterable<? extends User> arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteAll() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean exists(Long arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Iterable<User> findAll(Iterable<Long> arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public User findOne(Long arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends User> S save(S arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends User> Iterable<S> save(Iterable<S> arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public void returnBook(String barcode, User user) {
+		TypedQuery<BookLoanStatus> query = em
+				.createQuery("SELECT a FROM User u JOIN User_BookLoanStatus b ON u.id LEFT JOIN u.bookLoanStatus a WHERE u.id = " + user.getId()
+						+ " AND u.bookLoanStatus.barcode = :barcode", BookLoanStatus.class);
+		query.setParameter("barcode", barcode);
+		BookLoanStatus bls = query.getSingleResult();
+		user.returnBook(bls);
+		em.merge(user);
 	}
 
 }

@@ -1,0 +1,68 @@
+package libraryapp.domain.service;
+
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import libraryapp.domain.model.Book;
+import libraryapp.domain.model.BookLoanStatus;
+import libraryapp.domain.model.BookRepository;
+import libraryapp.domain.model.User;
+import libraryapp.domain.model.UserRepository;
+import libraryapp.interfaces.BorrowReceipt;
+import libraryapp.interfaces.BorrowingServiceFacade;
+import libraryapp.interfaces.ReservationReceipt;
+
+@Service("service")
+public class BorrowingServiceImpl implements BorrowingServiceFacade {
+	private UserRepository userRepository;
+	private BookRepository bookRepository;
+
+	@Autowired
+	public BorrowingServiceImpl(UserRepository userRepository, BookRepository bookRepository) {
+		this.userRepository = userRepository;
+		this.bookRepository = bookRepository;
+	}
+
+	@Override
+	public BorrowReceipt borrowBook(String barcode, String memberAccountId) {
+		Book book = bookRepository.findBookByBarcode(barcode);
+		User user = userRepository.findUserByMemberId(memberAccountId);
+		Date dateNow = java.sql.Date.valueOf(LocalDate.now());
+		Date dueDate = java.sql.Date.valueOf(LocalDate.now().plusDays(user.getMaxBorrowingDays()));
+		BorrowReceipt borrowReceipt = new BorrowReceipt(book.getTitle(), book.getBarcode(), dateNow, dueDate);
+
+		BookLoanStatus bls = new BookLoanStatus(book.getTitle(), book.getBarcode(), dateNow, dueDate);
+		bls.setUser(user);
+		user.addBookLoanStatus(bls);
+		userRepository.save(user);
+
+		return borrowReceipt;
+	}
+
+	@Override
+	public void returnBook(String barcode, String memberAccountId) {
+		User user = userRepository.findUserByMemberId(memberAccountId);
+		userRepository.returnBook(barcode, user);
+	}
+
+	@Override
+	public ReservationReceipt reserveBook(String isbn, String memberAccountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<BookLoanStatus> getBookLoanStatus(String memberAccountId) {
+		User user = userRepository.findUserByMemberId(memberAccountId);
+		return user.getBookLoanStatus();
+	}
+
+}

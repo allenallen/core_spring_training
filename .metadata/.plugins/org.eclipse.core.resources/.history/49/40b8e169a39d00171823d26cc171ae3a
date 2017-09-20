@@ -1,0 +1,46 @@
+package libraryapp.infrastructure.persistence.jpa;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import libraryapp.domain.model.BookLoanStatus;
+import libraryapp.domain.model.User;
+import libraryapp.domain.model.UserRepository;
+
+@Repository
+public class JpaUserRepository implements UserRepository {
+
+	@PersistenceContext
+	protected EntityManager em;
+
+	@Override
+	public User findUserByMemberId(String id) {
+		TypedQuery<User> query = em.createQuery("SELECT user FROM User user WHERE " + "user.memberAccountId = :id",
+				User.class);
+		query.setParameter("id", id);
+
+		return query.getSingleResult();
+
+	}
+
+	@Transactional
+	public <S extends User> S save(S user) {
+		em.merge(user);
+		return (S) em.find(User.class, user.getId());
+	}
+
+	@Override
+	public BookLoanStatus findBookLoanStatus(String barcode) {
+		TypedQuery<BookLoanStatus> query = em.createQuery(
+				"SELECT a.bookLoanStatus FROM User a WHERE a.bookLoanStatus.barcode = :barcode", BookLoanStatus.class);
+		query.setParameter("barcode", barcode);
+		query.getSingleResult();
+
+		return query.getSingleResult();
+	}
+
+}
